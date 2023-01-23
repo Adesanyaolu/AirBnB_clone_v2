@@ -1,44 +1,44 @@
 #!/usr/bin/python3
-""" starts a flask web application """
+'''Flask web application.
+'''
 from flask import Flask
+
+
 app = Flask(__name__)
+'''The Flask application instance.'''
+app.url_map.strict_slashes = False
 
 
-@app.route('/', strict_slashes=False)
-def hello_flask():
-    """ returns intro string """
-    return "Hello HBNB!"
+@app.route('/')
+def index():
+    '''The home route'''
+    return 'Hello HBNB!'
 
 
-@app.route('/hbnb', strict_slashes=False)
-def hello_flask_1():
-    """ returns intro string """
-    return "HBNB"
+@app.route('/hbnb')
+def hbnb():
+    '''The hbnb route.'''
+    return 'HBNB'
 
 
-@app.route('/c/<text>', strict_slashes=False)
-def c_flask(text):
-    """ returns text after replacing undescores with spaces """
-    string = "C "
-    string += text.replace('_', ' ')
-    return string
+@app.route('/c/<text>')
+def c(text):
+    '''The c route'''
+    return 'C {}'.format(text.replace('_', ' '))
 
 
-@app.route('/python', defaults={'text': 'is cool'}, strict_slashes=False)
-@app.route('/python/<text>', strict_slashes=False)
-def python_flask(text):
-    """ returns text after replacing underscores with spaces,
-        default = 'is cool'
-    """
-    text = text.replace('_', ' ')
-    return 'Python %s' % text
+@app.route('/python/<text>')
+@app.route('/python', defaults={'text': 'is cool'})
+def python(text):
+    '''The python route'''
+    return 'Python {}'.format(text.replace('_', ' '))
 
 
-@app.route('/number/<int:n>', strict_slashes=False)
-def number_flask(n):
-    """ display number """
-    if type(n) == int:
-        return '%i is a number' % n
+@app.route('/number/<int:n>')
+def number(n):
+    '''The number route'''
+    return '{} is a number'.format(n)
 
-if __name__ == "__main__":
-    app.run()
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port='5000')

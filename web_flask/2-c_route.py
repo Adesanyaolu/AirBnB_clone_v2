@@ -1,27 +1,31 @@
 #!/usr/bin/python3
-""" starts a flask web application """
+'''Flask web application.
+'''
 from flask import Flask
+
+
 app = Flask(__name__)
+'''The Flask application instance.'''
+app.url_map.strict_slashes = False
 
 
-@app.route('/', strict_slashes=False)
-def hello_flask():
-    """ returns intro string """
-    return "Hello HBNB!"
+@app.route('/')
+def index():
+    '''The home route'''
+    return 'Hello HBNB!'
 
 
-@app.route('/hbnb', strict_slashes=False)
-def hello_flask_1():
-    """ returns intro string """
-    return "HBNB"
+@app.route('/hbnb')
+def hbnb():
+    '''The hbnb route.'''
+    return 'HBNB'
 
 
-@app.route('/c/<text>', strict_slashes=False)
-def c_flask(text):
-    """ returns text after replacing undescores with spaces """
-    string = "C "
-    string += text.replace('_', ' ')
-    return string
+@app.route('/c/<text>')
+def c(text):
+    '''The c route'''
+    return 'C {}'.format(text.replace('_', ' '))
 
-if __name__ == "__main__":
-    app.run()
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port='5000')

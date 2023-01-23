@@ -1,52 +1,53 @@
 #!/usr/bin/python3
-""" starts a flask web application """
-from flask import Flask
-from flask import render_template
+'''Flask web application.
+'''
+from flask import Flask, render_template
+
+
 app = Flask(__name__)
+'''The Flask application instance.'''
+app.url_map.strict_slashes = False
 
 
-@app.route('/', strict_slashes=False)
-def hello_flask():
-    """ returns intro string """
-    return "Hello HBNB!"
+@app.route('/')
+def index():
+    '''The home route.'''
+    return 'Hello HBNB!'
 
 
-@app.route('/hbnb', strict_slashes=False)
-def hello_flask_1():
-    """ returns intro string """
-    return "HBNB"
+@app.route('/hbnb')
+def hbnb():
+    '''The hbnb toute.'''
+    return 'HBNB'
 
 
-@app.route('/c/<text>', strict_slashes=False)
-def c_flask(text):
-    """ returns text after replacing undescores with spaces """
-    string = "C "
-    string += text.replace('_', ' ')
-    return string
+@app.route('/c/<text>')
+def c(text):
+    '''The c route.'''
+    return 'C {}'.format(text.replace('_', ' '))
 
 
-@app.route('/python', defaults={'text': 'is cool'}, strict_slashes=False)
-@app.route('/python/<text>', strict_slashes=False)
-def python_flask(text):
-    """ returns text after replacing underscores with spaces,
-        default = 'is cool'
-    """
-    text = text.replace('_', ' ')
-    return 'Python %s' % text
+@app.route('/python/<text>')
+@app.route('/python', defaults={'text': 'is cool'})
+def python(text):
+    '''The python route.'''
+    return 'Python {}'.format(text.replace('_', ' '))
 
 
-@app.route('/number/<int:n>', strict_slashes=False)
-def number_flask(n):
-    """ return numbers """
-    if type(n) == int:
-        return '%i is a number' % n
+@app.route('/number/<int:n>')
+def number(n):
+    '''The number route.'''
+    return '{} is a number'.format(n)
 
 
-@app.route('/number_template/<int:n>', strict_slashes=False)
-def template_flask(n):
-    """ return html template with number """
-    if type(n) == int:
-        return render_template('5-number.html', n=n)
+@app.route('/number_template/<int:n>')
+def number_template(n):
+    '''The number_template route.'''
+    var = {
+        'n': n
+    }
+    return render_template('5-number.html', **var)
 
-if __name__ == "__main__":
-    app.run()
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port='5000')
